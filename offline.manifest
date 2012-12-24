@@ -1,0 +1,13 @@
+CACHE MANIFEST
+
+# Update 206
+
+CACHE:
+index.html
+style.css
+javascript.js
+jquery.js
+moment.js
+settings.svg
+done.svg
+DejaVuSansMono.ttf

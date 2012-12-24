@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html manifest="offline.manifest">
+<head>
+
+<!-- 
+    
+  Project: Version 1.0
+  Document: Build 7
+	
+  Clock created by Luis Gerhorst -  Website: http://luisgerhorts.de/ - Mail & Jabber: luis@luisgerhorst.de
+	
+-->
+
+  <title>Clock</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-language" content="de-de" />
+  <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0;"/>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="apple-touch-startup-image" href="ios-startup.png">
+  <link rel="apple-touch-icon-precomposed" href="touch-icon.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="touch-icon-iphone@2x.png" />
+  <link rel="stylesheet" type="text/css" href="style.css">
+  
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="moment.js"></script>
+  <script type="text/javascript" src="javascript.js"></script>
+
+</head>
+<body>
+
+<div id="wrapper">
+
+
+<div id="clock">
+    <ul></ul>
+</div> <!-- #clock-->
+
+
+<div id="settings">
+    
+    <ul class="added"></ul> <!-- added objects, remove them -->
+    
+    <ul class="removed">
+	    <li class="second button" onclick="secondFormat.add();">+ Second</li>
+	    <li class="secondDay button" onclick="secondDayFormat.add();">+ Second of Day</li>
+	    <li class="secondYear button" onclick="secondYearFormat.add();">+ Second of Year</li>
+        <li class="minute button" onclick="minuteFormat.add();">+ Minute</li>
+        <li class="minuteDay button" onclick="minuteDayFormat.add();">+ Minute of Day</li>
+        <li class="hour button" onclick="hourFormat.add();">+ Hour</li>
+        <li class="dayWeek button" onclick="dayWeekFormat.add();">+ Day of Week</li>
+        <li class="day button" onclick="dayFormat.add();">+ Day</li>
+        <li class="dayYear button" onclick="dayYearFormat.add();">+ Day of Year</li>
+        <li class="week button" onclick="weekFormat.add();">+ Week</li>
+        <li class="month button" onclick="monthFormat.add();">+ Month</li>
+        <li class="year button" onclick="yearFormat.add();">+ Year</li>
+    </ul> <!-- removed objects, add them -->
+
+</div> <!-- #settings -->
+
+
+</div> <!-- #wrapper -->
+
+
+<div id="settings-icon" class="button" onclick="settingsIconClick();"></div>
+<div title="Save" id="done-icon" class="button" onclick="doneIconClick();"></div>
+
+
+</body>
