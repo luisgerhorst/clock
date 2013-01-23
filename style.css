@@ -2,11 +2,6 @@
 
 /* Allgemein */
 
-@font-face {
-    font-family: "Deja Vu Sans Mono";
-    src: url(DejaVuSansMono.ttf);
-}
-
 body {
     background: rgb(255,50,50);
     font-size: 1.2em;
@@ -19,7 +14,7 @@ body {
     text-decoration: none;
     border: none;
     color: rgb(255,255,255);
-    font-family: "Deja Vu Sans Mono", Courier, monospace;
+    font-family: Menlo, Courier, monospace;
     }
     
 #wrapper {
