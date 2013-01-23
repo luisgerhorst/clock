@@ -78,7 +78,8 @@ var formats = {
 	    
 	    var days='', hours='', minutes='', seconds='', thousands='', hundreds='';
 	    
-	    days = parseInt(moment().format('DDDD')) * 24 * 60 * 60;
+	    days = parseInt(moment().format('DDDD'))-1; // -1 because the first day of the year is 1, not 0
+	    days = days * 24 * 60 * 60;
 	    hours = parseInt(moment().format('HH')) * 60 * 60;
 	    minutes = parseInt(moment().format('mm')) * 60;
 	    seconds = days + hours + minutes + parseInt(moment().format('ss'));
