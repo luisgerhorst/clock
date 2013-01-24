@@ -16,11 +16,12 @@ function Format(id, string, unit, time) {
 	    
 	    hide('#settings ul.removed li.' + id); // hide .removed item
 		
-		$('#settings ul.added').append('<li class="' + id + ' button">- ' + string + '</li>'); // add .added item
+		$('#settings ul.added').append('<li class="' + id + ' button" data-id="' + id + '">- ' + string + '</li>'); // add .added item
+		$('#settings ul.added li.' + id).click(remove); // add .added item listener
 		
 		$('#clock ul').append('<li class="' + id + '"><span class="number"></span><span class="unit"> ' + unit + '</span></li>'); // add format
 		
-		console.log('.add called; .id=' + id + ';'); // log
+		console.log('.add called, id=' + id); // log
 		
 	}
 	
@@ -32,16 +33,14 @@ function Format(id, string, unit, time) {
 		
 		$('#clock ul li.' + id).remove(); // remove format
 		
-		console.log('.remove called; .id=' + id + ';'); // log
+		console.log('remove called, id=' + id + ''); // log
 		
 	}
 
-
 	$('#settings ul.removed').append('<li class="' + id + ' button">+ ' + string + '</li>'); // add .removed item
+	$('#settings ul.removed li.' + id).click(this.add); // add .removed item listener
 	
-	
-	$('#settings ul.removed li.' + id).click(this.add); // on click on .removed item
-	$('#settings ul.added li.' + id).click(remove); // on click on .added item
+	console.log('new Format created, id=' + id);
 
 }
 
@@ -197,15 +196,31 @@ function showClockAndSave() {
 // save & read Status
 
 function saveStatus() {
-	setCookie('clockHTML', $('#clock ul').html());
-	setCookie('settingsAddedHTML', $('#settings ul.added').html());
-	setCookie('settingsRemovedHTML', $('#settings ul.removed').html());
+	
+	var added = {};
+	
+	$('#settings ul.added li').each( function () {
+		added[Object.keys(added).length] = $(this).attr('data-id');
+	});
+	
+	added = JSON.stringify(added);
+	setCookie('added', added);
+	
+	console.log("saved Status, " + added);
+	
 }
 
 function readStatus() {
-	$('#clock ul').html(readCookie('clockHTML'));
-	$('#settings ul.added').html(readCookie('settingsAddedHTML'));
-	$('#settings ul.removed').html(readCookie('settingsRemovedHTML'));
+
+	var added = readCookie('added');
+	added = JSON.parse(added);
+	
+	var id;
+	for (var count in added) {
+		id = added[count];
+		formats[id].add();
+	}
+	
 }
 
 // set / read Cookie
@@ -275,7 +290,7 @@ function addDefaultFormats() {
 // Start App
 
 showClock();
-if (readCookie('settingsRemovedHTML') == '') addDefaultFormats();
+if (readCookie('added') == '') addDefaultFormats();
 else readStatus();
     
 checkForUpdate();
