@@ -76,3 +76,12 @@ body {
 	background-position: right bottom;
 	background-repeat: no-repeat;
 }
+
+/* messages */
+
+#update-available {
+	position: fixed;
+	left: 16px;
+	bottom: 16px;
+	font-size: 16px;
+}

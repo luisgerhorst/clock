@@ -1,13 +1,12 @@
 CACHE MANIFEST
 
-# Update 207
+# Update 228
 
 CACHE:
 index.html
 style.css
-javascript.js
-jquery.js
-moment.js
 settings.svg
 done.svg
-DejaVuSansMono.ttf
+jquery.js
+moment.js
+javascript.js
