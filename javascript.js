@@ -1,15 +1,56 @@
 $(document).ready(function () {
 
 
-// Objects
+// Constructors
 
-function Format(id, string, unit, time) {
-	
-	this.setTime = function() {
+function Updater() {
+
+    // Methods
+
+	var install = function (event) {
 	    
-	    if ($('#clock ul li.' + id).length != 0) $('#clock ul li.' + id + ' span.number').text(time);
+	    if (window.applicationCache.status != 4) return; // zur sicherheit
+	    window.applicationCache.removeEventListener('updateready', install);
+	    window.applicationCache.swapCache();
+	    
+	    console.log('Update found, will be installed after next refresh.');
+	    
+	    $('#update-available').show();
+	    $('#update-available').click(function () { window.location.reload(); });
+	    
+	}
+
+	var check = function () {
+		
+		console.log('Checking for update ...');
+		
+	    if (window.applicationCache != undefined && window.applicationCache != null) {
+	        window.applicationCache.addEventListener('updateready', install);
+	    }
+	    
+	}
+	
+	// Actions
+	
+	check();
+
+}
+
+function Format(id, string, unit, currentTime) {
+
+    // Methods
+	
+	var remove = function () {
+	    
+	    $('#settings ul.removed li.' + id).show(); // show .removed item
+		$('#settings ul.added li.' + id).remove(); // remove .added item
+		$('#clock ul li.' + id).remove(); // remove format
+		
+		console.log('remove called, id=' + id + ''); // log
 		
 	}
+	
+	// Public Methods
 	
 	this.add = function() {
 	    
@@ -24,15 +65,13 @@ function Format(id, string, unit, time) {
 		
 	}
 	
-	var remove = function () {
-	    
-	    $('#settings ul.removed li.' + id).show(); // show .removed item
-		$('#settings ul.added li.' + id).remove(); // remove .added item
-		$('#clock ul li.' + id).remove(); // remove format
-		
-		console.log('remove called, id=' + id + ''); // log
+	this.setTime = function() {
+	
+	    if ($('#clock ul li.' + id).length) $('#clock ul li.' + id + ' span.number').text(currentTime);
 		
 	}
+
+    // Actions
 
 	$('#settings ul.removed').append('<li class="' + id + ' button">+ ' + string + '</li>'); // add .removed item
 	$('#settings ul.removed li.' + id).click(this.add); // add .removed item listener
@@ -42,48 +81,40 @@ function Format(id, string, unit, time) {
 }
 
 
-function AllFormats() {
-	
-	this.setTime = function () {
-	
-		for (var id in formats) {
-			formats[id].setTime();
-		}
-		
-	}
-	
-}
-
-
-function Cookie() {
-	
-	this.save = function (key, value) {
-	
-		document.cookie = 'clock_' + key + '=' + encodeURIComponent(value) + '; expires=' + new Date(moment() + 1000*60*60*24*360).toGMTString() + ';';
-		
-	}
-	
-	this.read = function (key) {
-	
-	    key =  'clock_' + key;
-	    
-	 	var value = '';
-		if(document.cookie) {
-	       	var array = document.cookie.split((escape(key) + '=')); 
-	       	if(2 <= array.length) {
-	           	var array2 = array[1].split(';');
-	       		value  = unescape(array2[0]);
-	       	}
-		}
-		
-		return decodeURIComponent(value);
-		
-	}
-	
-}
-
-
 function Settings() {
+
+    // Constructors
+
+    function Cookie() {
+    	
+    	this.save = function (key, value) {
+    	
+    		document.cookie = 'clock_' + key + '=' + encodeURIComponent(value) + '; expires=' + new Date(moment() + 1000*60*60*24*360).toGMTString() + ';';
+    		
+    	}
+    	
+    	this.read = function (key) {
+    	
+    	    key =  'clock_' + key;
+    	    
+    	 	var value = '';
+    		if(document.cookie) {
+    	       	var array = document.cookie.split((escape(key) + '=')); 
+    	       	if(2 <= array.length) {
+    	           	var array2 = array[1].split(';');
+    	       		value  = unescape(array2[0]);
+    	       	}
+    		}
+    		
+    		return decodeURIComponent(value);
+    		
+    	}
+    	
+    }
+    
+    var cookie = new Cookie();
+    
+    // Methods
 
 	var show = function () {
 		$('#clock').hide();
@@ -92,9 +123,7 @@ function Settings() {
 	    $('#settings-icon').hide();
 	}
 	
-	$('#settings-icon').click(show);
-	
-	this.hide = function () {
+	var hide = function () {
 	    $('#clock').show();
 	    $('#done-icon').hide();
 	    $('#settings').hide();
@@ -116,14 +145,6 @@ function Settings() {
 		
 	}
 	
-	var Settings = this;
-	
-	$('#done-icon').click(function () {
-		Settings.hide();
-		save();
-		console.log('#done-icon clicked');
-	});
-	
 	var read = function () {
 	
 		var added = cookie.read('added');
@@ -137,7 +158,7 @@ function Settings() {
 		
 	}
 	
-	this.check = function () {
+	var get = function () {
 	
 		if (cookie.read('added') == '') {
 			formats.secondDay.add();
@@ -148,47 +169,56 @@ function Settings() {
 	
 	}
 	
+	// Actions
+	
+	get();
+	
+	$('#settings-icon').click(show);
+	
+	$('#done-icon').click(function () {
+		hide();
+		save();
+	});
+	
 }
 
 
-function Updater() {
+function Time() {
 
-	$('#update-available').hide();
+    // Methods
 
-	this.install = function (event) {
-	    
-	    if (window.applicationCache.status != 4) return; // zur sicherheit
-	    window.applicationCache.removeEventListener('updateready', updater.install);
-	    window.applicationCache.swapCache();
-	    
-	    console.log('Update found, will be installed after next refresh.');
-	    
-	    $('#update-available').show();
-	    $('#update-available').click(function () { window.location.reload(); });
-	    
-	}
+    var set = function () {
+    
+    	for (var id in formats) {
+    		formats[id].setTime();
+    	}
+    	
+    }
 
-	this.check = function () {
-		
-		console.log('Checking for update ...');
-		
-	    if (window.applicationCache != undefined && window.applicationCache != null) {
-	        window.applicationCache.addEventListener('updateready', updater.install);
-	    }
-	    
-	}
-
+    var start = function () {
+    
+        set();
+        setInterval(set, 1000);
+        
+    }
+    
+    // Actions
+        
+    start();
+    
 }
 
 
 // Utilities
 
-function numberWithSeperator(string, seperator) {
-    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, seperator);
+var numberSeperator = function (string) {
+    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 
 // Start App
+
+var updater = new Updater();
 
 var formats = {
 	
@@ -206,7 +236,7 @@ var formats = {
 	    minutes = parseInt(moment().format('mm')) * 60;
 	    seconds = hours + minutes + parseInt(moment().format('ss'));
 	    
-	    seconds = numberWithSeperator(seconds, ' ');
+	    seconds = numberSeperator(seconds);
 	    
 	    return seconds;
 	    
@@ -222,7 +252,7 @@ var formats = {
 	    minutes = parseInt(moment().format('mm')) * 60;
 	    seconds = days + hours + minutes + parseInt(moment().format('ss'));
 	    
-	    seconds = numberWithSeperator(seconds, ' ');
+	    seconds = numberSeperator(seconds);
 	    
 	    return seconds;
 	    
@@ -241,7 +271,7 @@ var formats = {
 	    hours = parseInt(moment().format('HH')) * 60;
 	    minutes = hours + parseInt(moment().format('mm'));
 	    
-	    minutes = numberWithSeperator(minutes, ' ');
+	    minutes = numberSeperator(minutes);
 	    
 	    return minutes;
 		
@@ -291,17 +321,8 @@ var formats = {
 	
 };
 
-var allFormats = new AllFormats();
-var cookie = new Cookie();
 var settings = new Settings();
-var updater = new Updater();
-    
-updater.check();
-settings.check();
-settings.hide();
-
-allFormats.setTime();
-setInterval(allFormats.setTime, 1000);
+var time = new Time();
 
 
 });
