@@ -19,9 +19,45 @@ body {
     
 #wrapper {
     width: 60%;
-    margin: 0 auto;
+    margin: 0;
     padding: 20% 20% 5% 20%;
+}
+
+@-webkit-keyframes 'wrapperSlideIn' {
+    
+    0% {
+        margin: 0 0 0 -100%;
     }
+    
+    100% {
+        margin: 0;
+    }
+    
+}
+
+#wrapper {
+    -webkit-animation-name: wrapperSlideIn;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+}
+    
+@-webkit-keyframes 'wrapperSlideOut' {
+    
+    0% {
+        margin: 0;
+    }
+    
+    100% {
+        margin: 0 0 0 -100%;
+    }
+    
+}
+    
+#wrapper.slideOut {
+    -webkit-animation-name: wrapperSlideOut;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+}
 
 .hide {
 	display: none;
@@ -57,29 +93,61 @@ body {
 
 /* icons */
 
+@-webkit-keyframes 'iconSlideIn' {
+    
+    0% {
+        bottom: -8px;
+        opacity: 0.0;
+    }
+    
+    100% {
+        bottom: 16px;
+        opacity: 1.0;
+    }
+    
+}
+
+#settings-icon, #done-icon {
+    -webkit-animation-name: iconSlideIn;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    height: 16px;
+    width: 16px;
+    background-size: 16px;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+}
+
+@-webkit-keyframes 'iconSlideOut' {
+    
+    0% {
+        bottom: 16px;
+        opacity: 1.0;
+    }
+    
+    100% {
+        bottom: 40px;
+        opacity: 0.0;
+    }
+    
+}
+
+#settings-icon.slideOut, #done-icon.slideOut {
+    -webkit-animation-name: iconSlideOut;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 1;
+}
+
 #settings-icon {
-	position: fixed;
-	right: 16px;
-	bottom: 16px;
-	height: 16px;
-	width: 16px;
 	background-image: url(settings.svg);
-	background-size: 16px;
-	background-position: right bottom;
-	background-repeat: no-repeat;
 }
 
 #done-icon {
     display: none;
-	position: fixed;
-	right: 16px;
-	bottom: 16px;
-	height: 16px;
-	width: 16px;
 	background-image: url(done.svg);
-	background-size: 16px;
-	background-position: right bottom;
-	background-repeat: no-repeat;
 }
 
 /* messages */

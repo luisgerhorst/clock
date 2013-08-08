@@ -19,7 +19,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
-  <link rel="apple-touch-startup-image" href="ios-startup.png">
+  <link rel="apple-touch-startup-image" media="(device-width: 320px)" href="startup/iphone.png"> <!-- iPhone -->
+  <link rel="apple-touch-startup-image" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" href="startup/iphone-retina.png"> <!-- iPhone (Retina) -->
+  <link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="startup/iphone-5.png"> <!-- iPhone 5 (doesn't work, don't know why) -->
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: portrait)" href="startup/ipad-portrait.png"> <!-- iPad (portrait) -->
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: landscape)" href="startup/ipad-landscape.png"> <!-- iPad (landscape) -->
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" href="startup/ipad-retina-portrait.png"> <!-- iPad (Retina, portrait) -->
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" href="startup/ipad-retina-landscape.png"> <!-- iPad (Retina, landscape) -->
+  
   <link rel="apple-touch-icon-precomposed" href="touch-icon.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="touch-icon-iphone@2x.png" />
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -31,7 +38,7 @@
 </head>
 <body>
 
-<div id="wrapper">
+<div id="wrapper" class="slideIn">
 
 
 <div id="clock">

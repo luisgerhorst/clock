@@ -1,13 +1,9 @@
 $(document).ready(function () {
 
 
-// Constructors
+function update() {
 
-function Updater() {
-
-    // Methods
-
-	var install = function (event) {
+    var install = function (event) {
 	    
 	    if (window.applicationCache.status != 4) return; // zur sicherheit
 	    window.applicationCache.removeEventListener('updateready', install);
@@ -20,27 +16,21 @@ function Updater() {
 	    
 	}
 
-	var check = function () {
+	(function () {
 		
 		console.log('Checking for update ...');
 		
-	    if (window.applicationCache != undefined && window.applicationCache != null) {
+	    if (window.applicationCache !== undefined && window.applicationCache != null) {
 	        window.applicationCache.addEventListener('updateready', install);
 	    }
 	    
-	}
-	
-	// Actions
-	
-	check();
+	})();
 
 }
 
 function Format(id, string, unit, currentTime) {
 
-    // Methods
-	
-	var remove = function () {
+    var remove = function () {
 	    
 	    $('#settings ul.removed li.' + id).show(); // show .removed item
 		$('#settings ul.added li.' + id).remove(); // remove .added item
@@ -67,7 +57,7 @@ function Format(id, string, unit, currentTime) {
 	
 	this.setTime = function() {
 	
-	    if ($('#clock ul li.' + id).length) $('#clock ul li.' + id + ' span.number').text(currentTime);
+	    if ($('#clock ul li.' + id).length) $('#clock ul li.' + id + ' span.number').text(currentTime); // if item exists, text current time into it
 		
 	}
 
@@ -81,52 +71,81 @@ function Format(id, string, unit, currentTime) {
 }
 
 
-function Settings() {
+function settings() {
 
     // Constructors
 
-    function Cookie() {
-    	
-    	this.save = function (key, value) {
-    	
-    		document.cookie = 'clock_' + key + '=' + encodeURIComponent(value) + '; expires=' + new Date(moment() + 1000*60*60*24*360).toGMTString() + ';';
-    		
-    	}
-    	
-    	this.read = function (key) {
-    	
-    	    key =  'clock_' + key;
-    	    
-    	 	var value = '';
-    		if(document.cookie) {
-    	       	var array = document.cookie.split((escape(key) + '=')); 
-    	       	if(2 <= array.length) {
-    	           	var array2 = array[1].split(';');
-    	       		value  = unescape(array2[0]);
-    	       	}
-    		}
-    		
-    		return decodeURIComponent(value);
-    		
-    	}
-    	
-    }
+    var cookie = new (function () {
+	
+		this.save = function (key, value) {
+		
+			document.cookie = 'clock_' + key + '=' + encodeURIComponent(value) + '; expires=' + new Date(moment() + 1000*60*60*24*360).toGMTString() + ';';
+			
+		}
+		
+		this.read = function (key) {
+		
+			key =  'clock_' + key;
+			
+			var value = '';
+			if(document.cookie) {
+			    var array = document.cookie.split((escape(key) + '=')); 
+			    if(2 <= array.length) {
+					var array2 = array[1].split(';');
+					value  = unescape(array2[0]);
+			    }
+			}
+			
+			return decodeURIComponent(value);
+			
+		}
+	
+    })();
     
-    var cookie = new Cookie();
-    
-    // Methods
-
-	var show = function () {
-		$('#clock').hide();
+    var show = function () {
+	
+	    // #wrapper
+		$('#wrapper').addClass('slideOut');
+		setTimeout(function () {
+		    $('#wrapper').removeClass('slideOut').addClass('slideIn');
+		    $('#clock').hide();
+		    $('#settings').show();
+		    setTimeout(function () {
+		        $('#wrapper').removeClass('slideIn');
+		    }, 500);
+		}, 500);
+		
+		// #done-icon
 	    $('#done-icon').show();
-	    $('#settings').show();
-	    $('#settings-icon').hide();
+	    
+	    // #settings-icon
+	    $('#settings-icon').addClass('slideOut');
+	    setTimeout(function () {
+	        $('#settings-icon').removeClass('slideOut').hide();
+	    }, 500);
+	    
 	}
 	
 	var hide = function () {
-	    $('#clock').show();
-	    $('#done-icon').hide();
-	    $('#settings').hide();
+	
+	    // #wrapper
+	    $('#wrapper').addClass('slideOut');
+	    setTimeout(function () {
+	        $('#wrapper').removeClass('slideOut').addClass('slideIn');
+	        $('#clock').show();
+	        $('#settings').hide();
+	        setTimeout(function () {
+	            $('#wrapper').removeClass('slideIn');
+	        }, 500);
+	    }, 500);
+	    
+	    // #done-icon
+	    $('#done-icon').addClass('slideOut');
+	    setTimeout(function () {
+	        $('#done-icon').removeClass('slideOut').hide();
+	    }, 500);
+	    
+	    // #settings-icon
 	    $('#settings-icon').show();
 	}
 	
@@ -158,53 +177,41 @@ function Settings() {
 		
 	}
 	
-	var get = function () {
-	
-		if (cookie.read('added') == '') {
+	(function () {
+		
+		if (cookie.read('added') === '') {
 			formats.secondDay.add();
 			formats.week.add();
 		}
 		
 		else read();
+		
+		$('#settings-icon').click(show);
+		
+		$('#done-icon').click(function () {
+			hide();
+			save();
+		});
 	
-	}
-	
-	// Actions
-	
-	get();
-	
-	$('#settings-icon').click(show);
-	
-	$('#done-icon').click(function () {
-		hide();
-		save();
-	});
+	})();
 	
 }
 
 
-function Time() {
+function time() {
 
     // Methods
 
     var set = function () {
     
-    	for (var id in formats) {
-    		formats[id].setTime();
-    	}
+	    	for (var id in formats) {
+	    		formats[id].setTime();
+	    	}
     	
     }
 
-    var start = function () {
-    
-        set();
-        setInterval(set, 1000);
-        
-    }
-    
-    // Actions
-        
-    start();
+    set();
+    setInterval(set, 1000);
     
 }
 
@@ -218,7 +225,7 @@ var numberSeperator = function (string) {
 
 // Start App
 
-var updater = new Updater();
+update();
 
 var formats = {
 	
@@ -321,8 +328,8 @@ var formats = {
 	
 };
 
-var settings = new Settings();
-var time = new Time();
+settings();
+time();
 
 
 });
