@@ -1,13 +1,13 @@
 
 CACHE MANIFEST
 
-# Update 271
+# Update 272
 
-# CACHE:
-# index.html
-# style.css
-# done.svg
-# settings.svg
-# jquery.js
-# moment.js
-# javascript.js
+CACHE:
+index.html
+style.css
+done.svg
+settings.svg
+jquery.js
+moment.js
+javascript.js
