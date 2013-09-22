@@ -2,20 +2,23 @@
 
 /* Allgemein */
 
+html {
+    background: #fff;
+}
+
 body {
-    background: rgb(255,50,50);
     font-size: 1.2em;
 	line-height: 1.2em;
-    }
+}
 
 *, a {
     padding: 0;
     margin: 0;
     text-decoration: none;
     border: none;
-    color: rgb(255,255,255);
+    color: #000;
     font-family: Menlo, Courier, monospace;
-    }
+}
     
 #wrapper {
     width: 60%;

@@ -1,28 +1,5 @@
 $(document).ready(function () {
 
-function update() {
-
-    function install(event) {
-	    
-	    if (window.applicationCache.status != 4) return; // zur sicherheit
-	    window.applicationCache.removeEventListener('updateready', install);
-	    window.applicationCache.swapCache();
-	    
-	    console.log('Update found, will be installed after next refresh.');
-	    
-	    $('#update-available').show();
-	    $('#update-available').click(function () { window.location.reload(); });
-	    
-	}
-
-	console.log('Checking for update ...');
-	
-	if (window.applicationCache !== undefined && window.applicationCache != null) {
-		window.applicationCache.addEventListener('updateready', install);
-	}
-
-}
-
 function Format(id, string, unit, currentTime) {
 
     var remove = function () {
@@ -225,8 +202,6 @@ var numberSeperator = function (string) {
 
 
 // Start App
-
-update();
 
 var formats = {
 	
