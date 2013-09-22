@@ -23,6 +23,59 @@ body {
     padding: 20% 20% 5% 20%;
 }
 
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) /* iPad in portrait & landscape */, screen and (min-device-width : 320px) and (max-device-width : 480px) /* iPhone 2G-4S in portrait & landscape */, screen and (min-device-width : 320px) and (max-device-width : 568px) /* iPhone 5 in portrait & landscape */ {
+
+    *, a {
+        font-family: -apple-system-font;
+    }
+    
+    li .number {
+        font-weight: 100;
+        font-size: 72px;
+        line-height: 72px;
+    }
+    
+    li .unit {
+        font-weight: 100;
+        line-height: 72px;
+    }
+    
+    #wrapper {
+        margin: 0 auto;
+    }
+
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) /* iPad in portrait & landscape */ {
+
+    #wrapper {
+        width: 60%;
+        padding: 20%;
+    }
+    
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) /* iPhone 2G-4S in portrait & landscape */, screen and (min-device-width : 320px) and (max-device-width : 568px) /* iPhone 5 in portrait & landscape */ {
+    
+    #wrapper {
+        width: 100%;
+        margin: 0 auto;
+        padding: 72px 0 18px 0;
+    }
+    
+    #clock li {
+        text-align: center;
+    }
+    
+    #settings li {
+        display: block;
+        text-align: left;
+        margin: 0 0 0 72px;
+        line-height: 25px;
+    }
+    
+}
+
 @-webkit-keyframes 'wrapperSlideIn' {
     
     0% {

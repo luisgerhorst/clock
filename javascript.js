@@ -1,9 +1,8 @@
 $(document).ready(function () {
 
-
 function update() {
 
-    var install = function (event) {
+    function install(event) {
 	    
 	    if (window.applicationCache.status != 4) return; // zur sicherheit
 	    window.applicationCache.removeEventListener('updateready', install);
@@ -16,15 +15,11 @@ function update() {
 	    
 	}
 
-	(function () {
-		
-		console.log('Checking for update ...');
-		
-	    if (window.applicationCache !== undefined && window.applicationCache != null) {
-	        window.applicationCache.addEventListener('updateready', install);
-	    }
-	    
-	})();
+	console.log('Checking for update ...');
+	
+	if (window.applicationCache !== undefined && window.applicationCache != null) {
+		window.applicationCache.addEventListener('updateready', install);
+	}
 
 }
 
@@ -147,6 +142,7 @@ function settings() {
 	    
 	    // #settings-icon
 	    $('#settings-icon').show();
+	    
 	}
 	
 	var save = function () {
@@ -167,7 +163,14 @@ function settings() {
 	var read = function () {
 	
 		var added = cookie.read('added');
-		added = JSON.parse(added);
+		if (!added) return false;
+		
+		try {
+			added = JSON.parse(added);
+		} catch (err) {
+			console.log('Unable to parse JSON of added items.');
+			return false;
+		}
 		
 		var id;
 		for (var count in added) {
@@ -175,25 +178,23 @@ function settings() {
 			formats[id].add();
 		}
 		
+		return true;
+		
 	}
 	
-	(function () {
-		
-		if (cookie.read('added') === '') {
-			formats.secondDay.add();
-			formats.week.add();
-		}
-		
-		else read();
-		
-		$('#settings-icon').click(show);
-		
-		$('#done-icon').click(function () {
-			hide();
-			save();
-		});
+	if (!read()) {
+		formats.secondDay.add();
+		formats.week.add();
+	}
 	
-	})();
+	// Event handlers
+	
+	$('#settings-icon').click(show);
+	
+	$('#done-icon').click(function () {
+		hide();
+		save();
+	});
 	
 }
 
@@ -204,10 +205,10 @@ function time() {
 
     var set = function () {
     
-	    	for (var id in formats) {
-	    		formats[id].setTime();
-	    	}
-    	
+		for (var id in formats) {
+		    formats[id].setTime();
+		}
+
     }
 
     set();
@@ -219,7 +220,7 @@ function time() {
 // Utilities
 
 var numberSeperator = function (string) {
-    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); // insert space every third number
 }
 
 
@@ -330,6 +331,5 @@ var formats = {
 
 settings();
 time();
-
 
 });
